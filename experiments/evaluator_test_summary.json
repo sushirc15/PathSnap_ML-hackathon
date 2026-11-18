@@ -1,0 +1,81 @@
+{
+  "partition": "evaluator_test",
+  "model_artifact": "artifacts/models/final_model.joblib (frozen, trained on 80 train trips only)",
+  "hmm_artifact": "artifacts/configurations/hmm_config.json (frozen, tuned on train trips only)",
+  "n_trips": 10,
+  "trip_ids": [
+    "00000015",
+    "00000017",
+    "00000023",
+    "00000030",
+    "00000049",
+    "00000059",
+    "00000067",
+    "00000073",
+    "00000087",
+    "00000094"
+  ],
+  "total_observations": 19674,
+  "total_nodes_mean": 16883.2,
+  "total_arcs_mean": 33852.8,
+  "utm_epsg_codes": [
+    32630,
+    32631,
+    32632,
+    32636,
+    32637,
+    32638,
+    32654
+  ],
+  "validation_errors": 0,
+  "validation_warnings": [
+    {
+      "trip_id": "00000073",
+      "warning": "Large GPS time gaps (>30s): 5 (max=220.0s)"
+    },
+    {
+      "trip_id": "00000087",
+      "warning": "Road network contains 2 self-loop arcs"
+    }
+  ],
+  "candidate_miss_rate": 0.0016773406526380263,
+  "classifier_cand_macro_f1": 0.8715832407971198,
+  "classifier_cand_precision": 0.8234634894420196,
+  "classifier_cand_recall": 0.7108090219438928,
+  "classifier_log_loss": 0.08645154462260174,
+  "classifier_confusion_matrix": [
+    [
+      214304,
+      2993
+    ],
+    [
+      5680,
+      13961
+    ]
+  ],
+  "classifier_only": {
+    "weighted_top1_acc": 0.7694419030192132,
+    "mean_trip_top1_acc": 0.8430779621237627,
+    "mean_reach_step_cont": 0.9890254071259825,
+    "total_disconnected_trans": 138,
+    "mean_seq_arc_f1": 0.8337073593453059,
+    "mean_seq_length_f1": 0.8853582168569135,
+    "mean_recon_direct_cont": 0.7990206787454598
+  },
+  "classifier_plus_hmm": {
+    "weighted_top1_acc": 0.8912778286062824,
+    "mean_trip_top1_acc": 0.9024129218005627,
+    "mean_direct_step_cont": 0.9628063093103968,
+    "mean_reach_step_cont": 0.9999708157011528,
+    "mean_trans_reach_cont": 0.9989361702127659,
+    "total_disconnected_trans": 2,
+    "mean_seq_arc_f1": 0.9668920344820029,
+    "mean_seq_length_f1": 0.9819811783114231,
+    "mean_recon_direct_cont": 0.9995535714285715,
+    "total_bridged_arcs": 727,
+    "total_segment_breaks": 0,
+    "total_gap_breaks": 7,
+    "mean_hmm_ms": 592.765,
+    "mean_total_ms": 895.8430000000001
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "emission_weight": 1.0,
+  "transition_weight": 1.5,
+  "prob_floor": 1e-06,
+  "beta_m": 8.0,
+  "max_speed_mps": 45.0,
+  "base_search_slack_m": 120.0,
+  "max_search_dist_m": 1500.0,
+  "uturn_penalty": 2.5,
+  "same_arc_bonus": 0.25,
+  "gap_dt_threshold_s": 15.0,
+  "gap_dist_threshold_m": 350.0,
+  "unreachable_penalty": -25.0
+}

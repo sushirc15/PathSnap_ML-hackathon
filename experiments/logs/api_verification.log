@@ -1,0 +1,27 @@
+$ .venv/bin/uvicorn src.api.main:app --host 0.0.0.0 --port 8000 --access-log --log-level info
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+2026-11-18 13:59:25,581 | INFO    | pathsnap.api | Loaded PathSnap artifacts: model=HistGradientBoostingClassifier features=36 cand=CandidateConfig(radius_m=100.0, fallback_radius_m=300.0, top_k=16) hmm=HMMConfig(emission_weight=1.0, transition_weight=1.5, prob_floor=1e-06, beta_m=8.0, max_speed_mps=45.0, base_search_slack_m=120.0, max_search_dist_m=1500.0, uturn_penalty=2.5, same_arc_bonus=0.25, gap_dt_threshold_s=15.0, gap_dist_threshold_m=350.0, unreachable_penalty=-25.0)
+2026-11-18 13:59:25,583 | INFO    | pathsnap.api | PathSnap backend ready | model=HistGradientBoostingClassifier | partition=student_test | trips=10
+2026-11-18 13:59:25,587 | INFO    | pathsnap.api | HTTP GET /api/health from=testclient status=200 duration_ms=2.5
+2026-11-18 13:59:25,629 | INFO    | pathsnap.api | HTTP GET /api/trips from=testclient status=200 duration_ms=40.6
+2026-11-18 13:59:30,110 | INFO    | pathsnap.api | PREDICT trip=00000000 partition=student_test obs=2503 pred_arcs=200 hmm_top1=0.9513 cont=1.0000 total_ms=1012.9
+2026-11-18 13:59:30,117 | INFO    | pathsnap.api | HTTP POST /api/trips/00000000/predict from=testclient status=200 duration_ms=4487.1
+2026-11-18 13:59:32,803 | INFO    | pathsnap.api | PREDICT trip=00000007 partition=student_test obs=1354 pred_arcs=122 hmm_top1=0.9668 cont=1.0000 total_ms=462.2
+2026-11-18 13:59:32,806 | INFO    | pathsnap.api | HTTP POST /api/trips/00000007/predict from=testclient status=200 duration_ms=2661.4
+2026-11-18 13:59:35,934 | INFO    | pathsnap.api | PREDICT trip=00000009 partition=student_test obs=1049 pred_arcs=442 hmm_top1=0.8217 cont=1.0000 total_ms=1102.6
+2026-11-18 13:59:35,938 | INFO    | pathsnap.api | HTTP POST /api/trips/00000009/predict from=testclient status=200 duration_ms=3128.6
+2026-11-18 13:59:41,523 | INFO    | pathsnap.api | PREDICT trip=00000040 partition=student_test obs=2995 pred_arcs=319 hmm_top1=0.9469 cont=1.0000 total_ms=1352.3
+2026-11-18 13:59:41,529 | INFO    | pathsnap.api | HTTP POST /api/trips/00000040/predict from=testclient status=200 duration_ms=5587.6
+2026-11-18 13:59:42,279 | INFO    | pathsnap.api | PREDICT trip=00000052 partition=student_test obs=262 pred_arcs=93 hmm_top1=0.9466 cont=1.0000 total_ms=173.7
+2026-11-18 13:59:42,282 | INFO    | pathsnap.api | HTTP POST /api/trips/00000052/predict from=testclient status=200 duration_ms=749.6
+2026-11-18 14:02:10,490 | INFO    | pathsnap.api | PREDICT trip=00000056 partition=student_test obs=3958 pred_arcs=1347 hmm_top1=0.8785 cont=0.9985 total_ms=3479.2
+2026-11-18 14:02:10,496 | INFO    | pathsnap.api | HTTP POST /api/trips/00000056/predict from=testclient status=200 duration_ms=10023.6
+2026-11-18 14:02:12,000 | INFO    | pathsnap.api | PREDICT trip=00000065 partition=student_test obs=768 pred_arcs=167 hmm_top1=0.8945 cont=1.0000 total_ms=503.2
+2026-11-18 14:02:12,003 | INFO    | pathsnap.api | HTTP POST /api/trips/00000065/predict from=testclient status=200 duration_ms=1504.6
+2026-11-18 14:02:15,858 | INFO    | pathsnap.api | PREDICT trip=00000076 partition=student_test obs=1486 pred_arcs=423 hmm_top1=0.9186 cont=1.0000 total_ms=1559.3
+2026-11-18 14:02:15,868 | INFO    | pathsnap.api | HTTP POST /api/trips/00000076/predict from=testclient status=200 duration_ms=3862.6
+2026-11-18 14:02:27,864 | INFO    | pathsnap.api | PREDICT trip=00000077 partition=student_test obs=3911 pred_arcs=398 hmm_top1=0.7814 cont=1.0000 total_ms=3020.9
+2026-11-18 14:02:27,910 | INFO    | pathsnap.api | HTTP POST /api/trips/00000077/predict from=testclient status=200 duration_ms=12037.6
+2026-11-18 14:02:31,652 | INFO    | pathsnap.api | PREDICT trip=00000091 partition=student_test obs=874 pred_arcs=245 hmm_top1=0.8535 cont=1.0000 total_ms=1801.5
+2026-11-18 14:02:31,656 | INFO    | pathsnap.api | HTTP POST /api/trips/00000091/predict from=testclient status=200 duration_ms=3729.9
+2026-11-18 14:02:31,661 | INFO    | pathsnap.api | HTTP GET /api/trips/00000040/map from=testclient status=200 duration_ms=1.4

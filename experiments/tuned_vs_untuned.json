@@ -1,0 +1,104 @@
+{
+  "sampler": "Optuna TPESampler (Tree-structured Parzen Estimator)",
+  "objective": "3-fold GroupKFold CV Macro F1 during TPE search, confirmed via 5-fold GroupKFold CV (grouped by trip_id)",
+  "n_trials": 15,
+  "optimization_time_s": 1621.3732357090003,
+  "search_space": {
+    "learning_rate": {
+      "type": "float_log",
+      "low": 0.03,
+      "high": 0.2
+    },
+    "max_iter": {
+      "type": "int",
+      "low": 150,
+      "high": 390,
+      "step": 30
+    },
+    "max_leaf_nodes": {
+      "type": "int",
+      "low": 31,
+      "high": 127
+    },
+    "max_depth": {
+      "type": "categorical",
+      "choices": [
+        null,
+        10,
+        14,
+        18
+      ]
+    },
+    "min_samples_leaf": {
+      "type": "int",
+      "low": 20,
+      "high": 140
+    },
+    "l2_regularization": {
+      "type": "float_log",
+      "low": 0.01,
+      "high": 15.0
+    },
+    "max_bins": {
+      "type": "categorical",
+      "choices": [
+        128,
+        255
+      ]
+    }
+  },
+  "best_trial_number": 3,
+  "best_params": {
+    "learning_rate": 0.05221818641025601,
+    "max_iter": 240,
+    "max_leaf_nodes": 75,
+    "max_depth": null,
+    "min_samples_leaf": 25,
+    "l2_regularization": 0.8503895086490164,
+    "max_bins": 128
+  },
+  "untuned": {
+    "params": {
+      "max_iter": 200,
+      "learning_rate": 0.08,
+      "max_leaf_nodes": 63,
+      "min_samples_leaf": 30,
+      "l2_regularization": 1.0,
+      "max_bins": 255
+    },
+    "cv_macro_f1_mean": 0.8932988873787714,
+    "cv_macro_f1_std": 0.021773877583461342,
+    "cv_top1_mean": 0.73771594597262,
+    "cv_log_loss_mean": 0.08021010590984108,
+    "student_test_top1_acc": 0.8316805845511482,
+    "student_test_top1_given_hit": 0.8334640933103196,
+    "student_test_macro_f1": 0.9048727469992094,
+    "student_test_log_loss": 0.06892055484076343,
+    "student_test_route_continuity": 0.9839720219825396,
+    "train_time_s": 29.789412332999746,
+    "student_test_infer_time_s": 0.5169127920007668
+  },
+  "tuned": {
+    "params": {
+      "learning_rate": 0.05221818641025601,
+      "max_iter": 240,
+      "max_leaf_nodes": 75,
+      "max_depth": null,
+      "min_samples_leaf": 25,
+      "l2_regularization": 0.8503895086490164,
+      "max_bins": 128
+    },
+    "cv_macro_f1_mean": 0.8927122904728831,
+    "cv_macro_f1_std": 0.022644132233762514,
+    "cv_top1_mean": 0.7360846226264408,
+    "cv_log_loss_mean": 0.08115796386731891,
+    "search_3fold_cv_macro_f1": 0.8951421389212313,
+    "student_test_top1_acc": 0.8307933194154489,
+    "student_test_top1_given_hit": 0.8325749254668131,
+    "student_test_macro_f1": 0.9059137274468094,
+    "student_test_log_loss": 0.06869060859316325,
+    "student_test_route_continuity": 0.9838642596941266,
+    "train_time_s": 39.21927087499898,
+    "student_test_infer_time_s": 0.6542411669997819
+  }
+}

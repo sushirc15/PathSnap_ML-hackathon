@@ -1,0 +1,235 @@
+{
+  "partitions": {
+    "train": {
+      "n_trips": 80,
+      "total_gps_obs": 208417,
+      "gps_obs_min": 361,
+      "gps_obs_median": 1529.0,
+      "gps_obs_max": 19313,
+      "total_nodes_mean": 24168.5625,
+      "total_nodes_min": 299,
+      "total_nodes_max": 155003,
+      "total_arcs_mean": 48461.3,
+      "total_arcs_min": 649,
+      "total_arcs_max": 307392,
+      "missing_values_total": 0,
+      "invalid_coords_total": 0,
+      "invalid_arc_refs_total": 0,
+      "non_monotonic_ts_total": 0,
+      "duplicate_ts_total": 0,
+      "mean_pct_1s_steps": 93.83341170217598,
+      "trips_with_gt5s_gaps": 45,
+      "trips_with_gt30s_gaps": 28,
+      "max_dt_s_overall": 153064.0,
+      "max_gps_jump_m_overall": 887.7093766732161,
+      "lon_range": [
+        -100.418538,
+        137.237029
+      ],
+      "lat_range": [
+        -34.640291,
+        61.267258
+      ],
+      "utm_epsg_codes": [
+        32614,
+        32615,
+        32616,
+        32617,
+        32622,
+        32629,
+        32630,
+        32631,
+        32632,
+        32633,
+        32634,
+        32635,
+        32636,
+        32637,
+        32638,
+        32639,
+        32640,
+        32641,
+        32643,
+        32648,
+        32651,
+        32653,
+        32721,
+        32722,
+        32735
+      ],
+      "mean_isolated_nodes": 0.0,
+      "mean_wcc": 39.0125,
+      "mean_scc": 250.475,
+      "mean_arc_len_m": 49.12653715312354,
+      "median_arc_len_m": 24.577815360615453,
+      "mean_pct_two_way": 92.16733541064443,
+      "trips_with_route": 80,
+      "mean_route_arcs": 391.7,
+      "mean_route_direct_continuity": 0.9993461551444497,
+      "total_route_breaks": 13,
+      "trips_with_repeated_route_arcs": 9
+    },
+    "student_test": {
+      "n_trips": 10,
+      "total_gps_obs": 19160,
+      "gps_obs_min": 262,
+      "gps_obs_median": 1420.0,
+      "gps_obs_max": 3958,
+      "total_nodes_mean": 9068.9,
+      "total_nodes_min": 1770,
+      "total_nodes_max": 26635,
+      "total_arcs_mean": 18504.1,
+      "total_arcs_min": 3577,
+      "total_arcs_max": 56027,
+      "missing_values_total": 0,
+      "invalid_coords_total": 0,
+      "invalid_arc_refs_total": 0,
+      "non_monotonic_ts_total": 0,
+      "duplicate_ts_total": 0,
+      "mean_pct_1s_steps": 98.19896936551982,
+      "trips_with_gt5s_gaps": 2,
+      "trips_with_gt30s_gaps": 2,
+      "max_dt_s_overall": 210.0,
+      "max_gps_jump_m_overall": 76.9690344356685,
+      "lon_range": [
+        -93.424337,
+        77.271115
+      ],
+      "lat_range": [
+        42.645529,
+        61.69959
+      ],
+      "utm_epsg_codes": [
+        32615,
+        32631,
+        32633,
+        32636,
+        32638,
+        32639,
+        32640,
+        32641,
+        32643
+      ],
+      "mean_isolated_nodes": 0.0,
+      "mean_wcc": 22.7,
+      "mean_scc": 97.4,
+      "mean_arc_len_m": 52.76980708581501,
+      "median_arc_len_m": 31.945931092852398,
+      "mean_pct_two_way": 92.6940290876092,
+      "trips_with_route": 10,
+      "mean_route_arcs": 347.7,
+      "mean_route_direct_continuity": 0.9997319034852546,
+      "total_route_breaks": 1,
+      "trips_with_repeated_route_arcs": 1
+    },
+    "evaluator_test": {
+      "n_trips": 0,
+      "status": "not_supplied"
+    }
+  },
+  "warnings_count": 39,
+  "errors_count": 0,
+  "sample_warnings": [
+    {
+      "partition": "train",
+      "trip_id": "00000002",
+      "warning": "Large GPS time gaps (>30s): 10 (max=160.0s)"
+    },
+    {
+      "partition": "train",
+      "trip_id": "00000004",
+      "warning": "Large GPS time gaps (>30s): 2 (max=51.0s)"
+    },
+    {
+      "partition": "train",
+      "trip_id": "00000006",
+      "warning": "Large GPS time gaps (>30s): 3 (max=301.0s)"
+    },
+    {
+      "partition": "train",
+      "trip_id": "00000011",
+      "warning": "Large GPS time gaps (>30s): 1 (max=909.0s)"
+    },
+    {
+      "partition": "train",
+      "trip_id": "00000013",
+      "warning": "Road network contains 2 self-loop arcs"
+    },
+    {
+      "partition": "train",
+      "trip_id": "00000014",
+      "warning": "Large GPS time gaps (>30s): 1 (max=72.0s)"
+    },
+    {
+      "partition": "train",
+      "trip_id": "00000021",
+      "warning": "Large GPS time gaps (>30s): 2 (max=2161.0s)"
+    },
+    {
+      "partition": "train",
+      "trip_id": "00000024",
+      "warning": "Road network contains 2 self-loop arcs"
+    },
+    {
+      "partition": "train",
+      "trip_id": "00000024",
+      "warning": "Large GPS time gaps (>30s): 2 (max=458.0s)"
+    },
+    {
+      "partition": "train",
+      "trip_id": "00000028",
+      "warning": "Large GPS time gaps (>30s): 4 (max=196.0s)"
+    },
+    {
+      "partition": "train",
+      "trip_id": "00000032",
+      "warning": "Large GPS time gaps (>30s): 1 (max=41.0s)"
+    },
+    {
+      "partition": "train",
+      "trip_id": "00000035",
+      "warning": "Road network contains 2 self-loop arcs"
+    },
+    {
+      "partition": "train",
+      "trip_id": "00000037",
+      "warning": "Large GPS time gaps (>30s): 3 (max=52.0s)"
+    },
+    {
+      "partition": "train",
+      "trip_id": "00000038",
+      "warning": "Road network contains 2 self-loop arcs"
+    },
+    {
+      "partition": "train",
+      "trip_id": "00000041",
+      "warning": "Large GPS time gaps (>30s): 1 (max=89.0s)"
+    },
+    {
+      "partition": "train",
+      "trip_id": "00000042",
+      "warning": "Large GPS time gaps (>30s): 22 (max=670.0s)"
+    },
+    {
+      "partition": "train",
+      "trip_id": "00000043",
+      "warning": "Large GPS time gaps (>30s): 2 (max=230.0s)"
+    },
+    {
+      "partition": "train",
+      "trip_id": "00000044",
+      "warning": "Large GPS time gaps (>30s): 2 (max=341.0s)"
+    },
+    {
+      "partition": "train",
+      "trip_id": "00000054",
+      "warning": "Large GPS time gaps (>30s): 2 (max=79.0s)"
+    },
+    {
+      "partition": "train",
+      "trip_id": "00000055",
+      "warning": "Road network contains 8 self-loop arcs"
+    }
+  ],
+  "errors": []
+}

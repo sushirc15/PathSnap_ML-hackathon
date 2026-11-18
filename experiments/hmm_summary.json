@@ -1,0 +1,61 @@
+{
+  "hmm_config": {
+    "emission_weight": 1.0,
+    "transition_weight": 1.5,
+    "prob_floor": 1e-06,
+    "beta_m": 8.0,
+    "max_speed_mps": 45.0,
+    "base_search_slack_m": 120.0,
+    "max_search_dist_m": 1500.0,
+    "uturn_penalty": 2.5,
+    "same_arc_bonus": 0.25,
+    "gap_dt_threshold_s": 15.0,
+    "gap_dist_threshold_m": 350.0,
+    "unreachable_penalty": -25.0
+  },
+  "tuning_trips": [
+    "00000005",
+    "00000006",
+    "00000044",
+    "00000058",
+    "00000068",
+    "00000069",
+    "00000083",
+    "00000093"
+  ],
+  "n_student_test_trips": 10,
+  "total_observations": 19160,
+  "candidate_miss_rate": 0.002139874739039649,
+  "classifier_cand_macro_f1": 0.9059137274468094,
+  "classifier_log_loss": 0.06869060859316325,
+  "classifier_only": {
+    "weighted_top1_acc": 0.8307933194154489,
+    "mean_trip_top1_acc": 0.8476870193352404,
+    "mean_direct_step_cont": 0.9355827512493887,
+    "mean_reach_step_cont": 0.9838642596941266,
+    "mean_trans_direct_cont": 0.783376502570737,
+    "mean_trans_reach_cont": 0.9430010089839298,
+    "total_disconnected_trans": 330,
+    "mean_seq_arc_f1": 0.8727012213237637,
+    "mean_seq_length_f1": 0.9206247108619701,
+    "mean_recon_direct_cont": 0.783376502570737,
+    "mean_clf_infer_ms": 76.78638760007743
+  },
+  "classifier_plus_hmm": {
+    "weighted_top1_acc": 0.8855427974947808,
+    "mean_trip_top1_acc": 0.8959746344147244,
+    "mean_direct_step_cont": 0.976519522421197,
+    "mean_reach_step_cont": 0.9998190785626054,
+    "mean_trans_direct_cont": 0.8921157985039789,
+    "mean_trans_reach_cont": 0.9991010112851775,
+    "total_disconnected_trans": 3,
+    "mean_seq_arc_f1": 0.9673666432962932,
+    "mean_seq_length_f1": 0.9816888964732934,
+    "mean_recon_direct_cont": 0.999851411589896,
+    "total_bridged_arcs": 504,
+    "total_segment_breaks": 0,
+    "total_gap_breaks": 15,
+    "mean_hmm_decode_ms": 695.6748041999163,
+    "mean_total_pipeline_ms": 1058.5115000998485
+  }
+}

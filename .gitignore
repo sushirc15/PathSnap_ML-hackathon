@@ -1,0 +1,26 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+
+# Environment & secrets
+.env
+frontend/.env
+frontend/.env.local
+
+# Large raw & cached binary data (kept out of git repo size limits; paths configurable via .env)
+data/raw/
+data/evaluator_test/
+data/processed/
+data/cache/
+docs/
+
+# Frontend build & modules
+frontend/node_modules/
+frontend/dist/
+
+# OS / Editor
+.DS_Store
+*.swp
