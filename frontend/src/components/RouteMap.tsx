@@ -27,20 +27,20 @@ export function RouteMap({ prediction, loading }: RouteMapProps) {
       zoomControl: true,
     });
 
-    const osm = L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    const osm = L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "&copy; OpenStreetMap contributors",
       maxZoom: 19,
     });
-    const carto = L.tileLayer(
-      "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+    const esriStreet = L.tileLayer(
+      "https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
       {
-        attribution: "&copy; OpenStreetMap contributors &copy; CARTO",
+        attribution: "Tiles &copy; Esri",
         maxZoom: 19,
       }
     );
 
-    carto.addTo(map);
-    L.control.layers({ "Carto Light": carto, OpenStreetMap: osm }).addTo(map);
+    osm.addTo(map);
+    L.control.layers({ OpenStreetMap: osm, "Esri Street": esriStreet }).addTo(map);
     L.control.scale({ imperial: false }).addTo(map);
 
     layerGroupRef.current = L.layerGroup().addTo(map);
@@ -73,37 +73,37 @@ export function RouteMap({ prediction, loading }: RouteMapProps) {
       }).addTo(group);
     }
 
-    // 2. HMM/Viterbi predicted road route
-    if (showPredicted && geometry.predicted_polylines.length > 0) {
-      for (const line of geometry.predicted_polylines) {
-        L.polyline(line, {
-          color: "#dc2626",
-          weight: 4.2,
-          opacity: 0.92,
-        })
-          .bindTooltip("HMM/Viterbi Predicted Route")
-          .addTo(group);
-      }
-    }
-
-    // 3. Raw noisy GPS observations
+    // 2. Raw noisy GPS observations (drawn below predicted route so crimson route stays clearly visible)
     if (showGps && geometry.gps_points.length > 0) {
       const gpsLatLngs = geometry.gps_points.map((p) => [p.lat, p.lon] as [number, number]);
       L.polyline(gpsLatLngs, {
         color: "#2563eb",
-        weight: 1.6,
-        opacity: 0.42,
+        weight: 1.5,
+        opacity: 0.38,
       }).addTo(group);
 
       for (const p of geometry.gps_points) {
         L.circleMarker([p.lat, p.lon], {
-          radius: 2.6,
+          radius: 2.3,
           color: "#1d4ed8",
           fillColor: "#3b82f6",
-          fillOpacity: 0.85,
-          weight: 1,
+          fillOpacity: 0.72,
+          weight: 0.8,
         })
           .bindPopup(`GPS Obs #${p.idx}<br/>t = ${p.t}s`)
+          .addTo(group);
+      }
+    }
+
+    // 3. HMM/Viterbi predicted road route (rendered prominently on top)
+    if (showPredicted && geometry.predicted_polylines.length > 0) {
+      for (const line of geometry.predicted_polylines) {
+        L.polyline(line, {
+          color: "#dc2626",
+          weight: 4.5,
+          opacity: 0.92,
+        })
+          .bindTooltip("HMM/Viterbi Predicted Route")
           .addTo(group);
       }
     }
