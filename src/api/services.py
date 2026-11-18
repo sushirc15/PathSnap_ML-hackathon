@@ -337,7 +337,7 @@ class PathSnapInferenceService:
         ]
 
         predicted_polylines = _merge_arc_polylines(prep, dec.reconstructed_route_arcs)
-        local_roads = _extract_local_road_segments(prep, buffer_m=120.0, max_arcs=900)
+        local_roads = _extract_local_road_segments(prep, buffer_m=160.0, max_arcs=3500)
 
         logger.info(
             "PREDICT trip=%s partition=%s obs=%d pred_arcs=%d hmm_top1=%s cont=%.4f total_ms=%.1f",

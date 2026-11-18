@@ -16,6 +16,7 @@ data/evaluator_test/
 data/processed/
 data/cache/
 docs/
+reports/maps/debug_offline_*.html
 
 # Frontend build & modules
 frontend/node_modules/

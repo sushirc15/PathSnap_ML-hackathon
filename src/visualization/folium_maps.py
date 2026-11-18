@@ -7,27 +7,63 @@ from typing import Iterable, List, Optional, Sequence, Tuple
 
 import folium
 import numpy as np
+import shapely
 
 from src.data.preprocessing import PreparedTrip
 
 
 def _extract_local_road_segments(
     trip: PreparedTrip,
-    buffer_m: float = 200.0,
-    max_arcs: int = 2500,
+    buffer_m: float = 160.0,
+    max_arcs: int = 3500,
 ) -> List[List[Tuple[float, float]]]:
-    """Return local road-network polylines around the GPS trajectory bounding box."""
-    min_x = float(np.min(trip.gps_x)) - buffer_m
-    max_x = float(np.max(trip.gps_x)) + buffer_m
-    min_y = float(np.min(trip.gps_y)) - buffer_m
-    max_y = float(np.max(trip.gps_y)) + buffer_m
+    """Return deduplicated undirected road-network polylines along the trajectory corridor.
 
-    arc_ids = trip.spatial_index.query_arcs_in_bbox(min_x, min_y, max_x, max_y)
-    if len(arc_ids) > max_arcs:
-        # Subsample evenly to keep HTML map crisp and responsive
-        step = max(1, len(arc_ids) // max_arcs)
-        arc_ids = arc_ids[::step]
-    return trip.network.get_arc_lonlat_coords(arc_ids)
+    Uses a Shapely corridor buffer around the GPS track (rather than naive bounding-box striding)
+    and collapses bidirectional twin arcs (u->v and v->u) so nearby streets render continuously
+    without broken visual gaps.
+    """
+    if trip.spatial_index._tree is None or len(trip.gps_x) == 0:
+        return []
+
+    # Subsample trajectory vertices roughly every ~15-25m / max 350 anchors for fast corridor union
+    step = max(1, len(trip.gps_x) // 350)
+    gx = trip.gps_x[::step]
+    gy = trip.gps_y[::step]
+    if len(gx) > 1:
+        line = shapely.linestrings(np.column_stack([gx, gy]))
+        corridor = shapely.buffer(line, buffer_m, quad_segs=4)
+    else:
+        corridor = shapely.buffer(shapely.points(float(gx[0]), float(gy[0])), buffer_m, quad_segs=4)
+
+    arc_ids = np.asarray(
+        trip.spatial_index._tree.query(corridor, predicate="intersects"), dtype=np.int32
+    )
+    if len(arc_ids) == 0:
+        return []
+
+    # Deduplicate undirected twin arcs (u, v) == (v, u) so we never waste budget drawing streets twice
+    net = trip.network
+    u = net.from_nodes[arc_ids]
+    v = net.to_nodes[arc_ids]
+    lo = np.minimum(u, v).astype(np.int64)
+    hi = np.maximum(u, v).astype(np.int64)
+    keys = lo * np.int64(max(net.num_nodes, 1)) + hi
+    _, first_idx = np.unique(keys, return_index=True)
+    unique_arcs = arc_ids[np.sort(first_idx)]
+
+    # If still above max_arcs in an ultra-dense city, prioritize arcs closest to trajectory centerlines
+    if len(unique_arcs) > max_arcs:
+        mx = 0.5 * (net.x1[unique_arcs] + net.x2[unique_arcs])
+        my = 0.5 * (net.y1[unique_arcs] + net.y2[unique_arcs])
+        # Distance to nearest subsampled GPS anchor
+        dx = mx[:, None] - gx[None, :]
+        dy = my[:, None] - gy[None, :]
+        min_d2 = np.min(dx * dx + dy * dy, axis=1)
+        keep = np.argpartition(min_d2, max_arcs)[:max_arcs]
+        unique_arcs = unique_arcs[keep]
+
+    return net.get_arc_lonlat_coords(unique_arcs)
 
 
 def _merge_arc_polylines(
@@ -85,7 +121,7 @@ def build_trip_folium_map(
 
     m = folium.Map(
         location=[center_lat, center_lon],
-        zoom_start=14,
+        zoom_start=15,
         tiles="OpenStreetMap",
         control_scale=True,
     )
@@ -93,6 +129,11 @@ def build_trip_folium_map(
         tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}",
         attr="Tiles &copy; Esri",
         name="Esri Street",
+    ).add_to(m)
+    folium.TileLayer(
+        tiles="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+        attr="Tiles &copy; Esri",
+        name="Esri Satellite",
     ).add_to(m)
 
     # Fit bounds tightly around trajectory
@@ -102,19 +143,19 @@ def build_trip_folium_map(
 
     legend_items: List[Tuple[str, str]] = []
 
-    # 1. Local road network geometry
+    # 1. Local corridor road network geometry (clear dark-slate contrast)
     if show_road_network:
-        road_group = folium.FeatureGroup(name="Road Network (Local)", show=True)
-        road_lines = _extract_local_road_segments(trip, buffer_m=150.0, max_arcs=2000)
+        road_group = folium.FeatureGroup(name="Road Network (Corridor)", show=True)
+        road_lines = _extract_local_road_segments(trip, buffer_m=160.0, max_arcs=3500)
         if road_lines:
             folium.PolyLine(
                 locations=road_lines,
-                color="#94a3b8",
-                weight=1.4,
-                opacity=0.45,
+                color="#475569",
+                weight=2.0,
+                opacity=0.60,
             ).add_to(road_group)
         road_group.add_to(m)
-        legend_items.append(("#94a3b8", "Road Network (Local)"))
+        legend_items.append(("#475569", f"Road Network ({len(road_lines):,} segments)"))
 
     # 2. Reference route (offline/EDA/dev only)
     if reference_arcs is not None and len(reference_arcs) > 0:
@@ -123,8 +164,8 @@ def build_trip_folium_map(
             folium.PolyLine(
                 locations=line,
                 color="#16a34a",
-                weight=6,
-                opacity=0.75,
+                weight=7.0,
+                opacity=0.70,
                 tooltip="Reference Route",
             ).add_to(ref_group)
         ref_group.add_to(m)
@@ -137,51 +178,58 @@ def build_trip_folium_map(
             folium.PolyLine(
                 locations=line,
                 color="#f97316",
-                weight=3.5,
-                opacity=0.8,
+                weight=3.2,
+                opacity=0.85,
                 dash_array="6, 6",
                 tooltip="Classifier-Only Route",
             ).add_to(clf_group)
         clf_group.add_to(m)
         legend_items.append(("#f97316", "Classifier-Only Prediction"))
 
-    # 4. HMM/Viterbi predicted route
-    if predicted_arcs is not None and len(predicted_arcs) > 0:
-        pred_group = folium.FeatureGroup(name="HMM/Viterbi Predicted Route", show=True)
-        for line in _merge_arc_polylines(trip, predicted_arcs):
-            folium.PolyLine(
-                locations=line,
-                color="#dc2626",
-                weight=3.5,
-                opacity=0.92,
-                tooltip="HMM/Viterbi Predicted Route",
-            ).add_to(pred_group)
-        pred_group.add_to(m)
-        legend_items.append(("#dc2626", "HMM/Viterbi Predicted Route"))
-
-    # 5. Raw noisy GPS observations
+    # 4. Raw noisy GPS observations (below predicted route so crimson path stays prominent)
     gps_group = folium.FeatureGroup(name="Raw GPS Observations", show=True)
     gps_coords = list(zip(trip.lat.tolist(), trip.lon.tolist()))
     folium.PolyLine(
         locations=gps_coords,
         color="#2563eb",
-        weight=1.5,
-        opacity=0.45,
+        weight=1.4,
+        opacity=0.38,
     ).add_to(gps_group)
 
     step = max(1, len(trip.lat) // max_gps_markers)
     for idx in range(0, len(trip.lat), step):
         folium.CircleMarker(
             location=[float(trip.lat[idx]), float(trip.lon[idx])],
-            radius=2.5,
+            radius=2.2,
             color="#1d4ed8",
             fill=True,
             fill_color="#3b82f6",
-            fill_opacity=0.85,
+            fill_opacity=0.75,
+            weight=0.7,
             popup=f"Obs #{idx} | t={trip.timestamp[idx]:.1f}s | v={trip.speed_smooth[idx]:.1f} m/s",
         ).add_to(gps_group)
     gps_group.add_to(m)
     legend_items.append(("#2563eb", f"Raw GPS Points (n={len(trip.lat)})"))
+
+    # 5. HMM/Viterbi predicted route (rendered on top with white halo casing for high contrast)
+    if predicted_arcs is not None and len(predicted_arcs) > 0:
+        pred_group = folium.FeatureGroup(name="HMM/Viterbi Predicted Route", show=True)
+        for line in _merge_arc_polylines(trip, predicted_arcs):
+            folium.PolyLine(
+                locations=line,
+                color="#ffffff",
+                weight=6.5,
+                opacity=0.85,
+            ).add_to(pred_group)
+            folium.PolyLine(
+                locations=line,
+                color="#dc2626",
+                weight=3.8,
+                opacity=0.95,
+                tooltip="HMM/Viterbi Predicted Route",
+            ).add_to(pred_group)
+        pred_group.add_to(m)
+        legend_items.append(("#dc2626", "HMM/Viterbi Predicted Route"))
 
     # Start & End markers
     markers_group = folium.FeatureGroup(name="Start / End Markers", show=True)
