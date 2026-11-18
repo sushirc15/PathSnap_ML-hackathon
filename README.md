@@ -173,3 +173,65 @@ curl -X POST http://192.168.1.42:8000/api/trips/<TRIP_ID>/predict
 - Prediction-time execution (`run_prediction_only`) reads **only** `.track`, `.nodes`, `.arcs`, and saved artifacts (`artifacts/models/final_model.joblib`, `artifacts/preprocessors/feature_config.json`, `artifacts/configurations/hmm_config.json`).
 - Server-side evaluation (`evaluate_server_side`) runs strictly **after** prediction completes, reads `.route` exclusively on Laptop 1, and returns only aggregate scalar metrics (returning `null` / `Unavailable` whenever no `.route` exists).
 - Neither `.route` arc sequences nor reference-route geometries are ever sent to the model, API response payload, evaluator Folium map, or frontend dashboard.
+
+---
+
+## Team Members & Contributions
+
+All four team members contributed equally (**25% each**) across distinct technical workstreams of the PathSnap system.
+
+| # | Name | SRN | Role | Contribution |
+|---|---|---|---|---|
+| 1 | **Sushir C** | `PES1UG24AM297` | Data & Geospatial Foundation | 25% |
+| 2 | **T Surya** | `PES1UG24AM300` | Features & Machine Learning Model | 25% |
+| 3 | **T B Akash** | `PES1UG24AM299` | HMM, Evaluation & Quality | 25% |
+| 4 | **Swastik Pamadi** | `PES1UG24AM298` | Application, API & Release Integration | 25% |
+
+### 1. Sushir C
+- **SRN:** `PES1UG24AM297`
+- **Role:** Data & Geospatial Foundation
+- **Contribution:** 25%
+- **Responsibilities:**
+  - Dataset validation and exploratory data analysis (EDA).
+  - Coordinate projection and geospatial preprocessing.
+  - Road graph construction.
+  - Spatial indexing and candidate road search.
+  - Dataset audit and visualisation of GPS observations with nearby road candidates.
+  - Testing graph construction and spatial search.
+
+### 2. T Surya
+- **SRN:** `PES1UG24AM300`
+- **Role:** Features & Machine Learning Model
+- **Contribution:** 25%
+- **Responsibilities:**
+  - Route-label alignment.
+  - Prediction-time feature engineering.
+  - Training and evaluation of machine learning models.
+  - Model comparison and Bayesian hyperparameter optimisation.
+  - Saved model artifacts and experiment results.
+  - Reproducible training pipeline and performance metrics.
+
+### 3. T B Akash
+- **SRN:** `PES1UG24AM299`
+- **Role:** HMM, Evaluation & Quality
+- **Contribution:** 25%
+- **Responsibilities:**
+  - Road-aware transition scoring.
+  - Hidden Markov Model (HMM) implementation.
+  - Viterbi route decoding.
+  - Route evaluation metrics and continuity analysis.
+  - Held-out evaluator testing.
+  - Ground-truth isolation and verification that reference routes do not leak into predictions.
+  - Classifier-only versus HMM performance comparisons.
+
+### 4. Swastik Pamadi
+- **SRN:** `PES1UG24AM298`
+- **Role:** Application, API & Release Integration
+- **Contribution:** 25%
+- **Responsibilities:**
+  - FastAPI backend development and endpoints.
+  - React/Leaflet evaluator dashboard.
+  - Two-laptop deployment and integration.
+  - Frontend/backend communication.
+  - Live prediction demonstration.
+  - Launch scripts, README documentation and deployment instructions.
